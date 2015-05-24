@@ -68,4 +68,4 @@ env.filters['cell_class'] = cell_class
 
 template = env.get_template("calendar.html")
 
-print template.render(data=data, weekdays=weekdays, months=months)
+print template.render(data=[list(x) for x in data], weekdays=weekdays, months=months)
