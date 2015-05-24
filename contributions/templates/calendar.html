@@ -1,0 +1,90 @@
+<html>
+
+<head>
+
+<!-- Minified Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<style>
+  .cell {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    min-height: 15px;
+    display: table-cell;
+    margin: 1px;
+    font-size: 0.01em;
+    resize: none;
+  }
+
+
+
+  .contrib_none {
+    background-color: #eee;
+
+  }
+
+  .weekday,
+  .month {
+    font-size: 0.7em;
+    color: #ccc;
+  }
+
+  .month {
+    width: 28px;
+    color: #aaa;
+    font-size: 0.8em;
+  }
+
+  .contrib_none:hover {
+    border: 1px solid black;
+  }
+
+  .panel {
+    width: 1000px;
+  }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Contributions
+    </div>
+    <center>
+    <div class="panel-body">
+        <!-- {{ data }} -->
+        <div style="display: table; border-spacing: 2px 1px;">
+          <span class="cell weekday"></span>
+          {% for month in months %}
+          {% if month %}
+          <span class="cell month">{{ month }}</span>
+          {% else %}
+          <span class="cell weekday"></span>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% for row in data %}
+        <div style="display: table; border-spacing: 2px 1px;">
+          <span class="cell weekday">{{ weekdays[loop.index0] }}</span>
+          {% for cell in row %}
+
+          {% set date = cell.date %}
+          <span year="{{ date.year }}"
+                month="{{ date.month }}"
+                day="{{ date.day }}"
+                class="cell contrib_{{ cell|cell_class }}">&nbsp;</span>
+          {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>

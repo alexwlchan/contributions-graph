@@ -3,7 +3,6 @@
 This is a reimplementation of the Contributions chart from the GitHub user page, written in Python.
 
 
-
 ## Design
 
 The main module presents an object, `ContributionGraph`, with two parameters for `__init__`:
