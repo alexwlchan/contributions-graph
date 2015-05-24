@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 
-import time
+import datetime
+
+def within_last_year(date):
+    """
+    Returns True if a date falls within the last year, False otherwise.
+
+    Takes a datetime object as an argument.
+    """
+    today = datetime.date.today()
+    return datetime.datetime(today.year - 1, today.month, today.day) < date
 
 def parse_contributions(file_path, date_format="%Y-%m-%d", separator=" "):
     """
@@ -22,11 +31,13 @@ def parse_contributions(file_path, date_format="%Y-%m-%d", separator=" "):
             date_str, value = line.strip().split(separator)
 
             try:
-                date = time.strptime(date_str, date_format)
+                date = datetime.datetime.strptime(date_str, date_format)
             except ValueError:
                 print "Malformed date string in line:\n{}".format(line.strip())
                 raise
 
-            results[date] = value
+            # Only add the result if the date is within the last year
+            if within_last_year(date):
+                results[date] = int(value)
 
     return results
