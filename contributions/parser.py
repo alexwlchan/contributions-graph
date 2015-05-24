@@ -3,14 +3,7 @@
 from collections import defaultdict
 from datetime import datetime, date, timedelta
 
-
-def _is_weekday(date):
-    """
-    Returns True or False depending on whether a given datetime.date is a
-    weekday (Monday to Friday).
-    """
-    # The weekday() method sets Monday as 0, Sunday as 6
-    return (date.weekday() in range(4))
+from date_utils import is_weekday, previous_day
 
 
 def _is_within_last_year(date):
@@ -60,29 +53,11 @@ class ContributionsGraph(object):
                 if _is_within_last_year(date):
                     # If skip_weekends is True, only include the value if this
                     # is a weekday.
-                    if self.skip_weekends and not _is_weekday(date):
+                    if self.skip_weekends and not is_weekday(date):
                         continue
                     contributions[date] += int(value.strip())
 
         self.contributions = contributions
-
-    def _previous_day(date):
-        """
-        Returns the previous day. Takes a datetime.date object.
-
-        If skip_weekends is True, then the day before a Friday is the preceding
-        Monday.
-        """
-        if self.skip_weekends:
-            # The weekday() method sets Monday as 0
-            if date.weekday() == 0:
-                date -= timedelta(3)
-            else:
-                date -= timedelta(1)
-            return date
-        else:
-            date -= timedelta(1)
-            return date
 
     def total_contributions(self):
         """
@@ -107,7 +82,7 @@ class ContributionsGraph(object):
             # in the current streak, then it's part of the same streak. If not,
             # then it's part of a new streak.
             for idx in range(1, len(days)):
-                if _previous_day(days[idx]) == current_streak[-1]:
+                if previous_day(days[idx], self.skip_weekends) == current_streak[-1]:
                     current_streak.append(days[idx])
                 else:
                     streaks.append(current_streak)
@@ -130,6 +105,6 @@ class ContributionsGraph(object):
 
         while current_date in self.contributions.keys():
             streak.append(current_date)
-            current_date = _previous_day(current_date)
+            current_date = _previous_day(current_date, self.skip_weekends)
 
         return streak

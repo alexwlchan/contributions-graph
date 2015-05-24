@@ -1,0 +1,62 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <strong>Contributions</strong>
+  </div>
+  <center>
+  <div class="panel-body">
+    <div style="display: table; border-spacing: 2px 1px;">
+      <span class="cell weekday"></span>
+      {% for month in months %}
+      {% if month %}
+      <span class="cell month">{{ month }}</span>
+      {% else %}
+      <span class="cell weekday"></span>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% for row in data %}
+    <div style="display: table; border-spacing: 2px 1px;">
+      <span class="cell weekday">{{ weekdays[loop.index0] }}</span>
+      {% for cell in row %}
+
+      {% set date = cell.date %}
+      <span year="{{ date.year }}"
+            month="{{ date.month }}"
+            day="{{ date.day }}"
+            class="cell contrib_{{ cell|cell_class }}">&nbsp;</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <div style="display: table; border-spacing: 2px 1px; margin-top: 15px;">
+      <span class="cell weekday"></span>
+      {% for i in range(data[0]|length - 11) %}
+      <span class="cell contrib_empty"></span>
+      {% endfor %}
+      <span class="cell month">Less</span>
+      <span class="cell contrib_none"></span>
+      <span class="cell contrib_low"></span>
+      <span class="cell contrib_med1"></span>
+      <span class="cell contrib_med2"></span>
+      <span class="cell contrib_high"></span>
+      <span class="cell month">&nbsp;More</span>
+    </div>
+
+    <div class="row">
+      <div class="metadata col-md-4">
+        <div class="text-muted">Contributions in the last year</div>
+        <div class="contrib-number">20 total</div>
+        <div class="text-muted">May 24, 2014 &ndash; May 24, 2015</div>
+      </div>
+      <div class="metadata metadata-center col-md-4">
+        <div class="text-muted">Longest streak</div>
+        <div class="contrib-number">1 day</div>
+        <div class="text-muted">January 30 &ndash; January 30</div>
+      </div>
+      <div class="metadata col-md-4">
+        <div class="text-muted">Current streak</div>
+        <div class="contrib-number">0 days</div>
+        <div class="text-muted">Last contributed 9 days ago</div>
+      </div>
+    </div>
+  </div>
+</div>
