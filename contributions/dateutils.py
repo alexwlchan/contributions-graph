@@ -3,13 +3,21 @@
 import datetime
 
 
+def _today():
+    """
+    Wrapper function for getting the current date. Broken into its own function
+    for easier mocking.
+    """
+    return datetime.date.today()
+
+
 def is_weekday(date):
     """
     Returns True if a given datetime.date is a weekday (Monday to Friday).
     """
     # The weekday() method returns the day of the week as an integer, where
     # Monday is 0 and Sunday is 6. Weekdays are thus 0-4 (inclusive).
-    return (date.weekday() in range(4))
+    return (date.weekday() in range(5))
 
 
 def is_within_last_year(date):
@@ -18,8 +26,9 @@ def is_within_last_year(date):
 
     Takes a datetime.date as an argument.
     """
-    today = datetime.date.today()
-    return date(today.year - 1, today.month, today.day) < date
+    today = _today()
+    one_year_ago = datetime.date(today.year - 1, today.month, today.day)
+    return one_year_ago <= date <= today
 
 
 def _increment_day(date, skip_weekends, val):
@@ -29,13 +38,11 @@ def _increment_day(date, skip_weekends, val):
     If skip_weekends is True, then it treats Friday and Monday as consecutive
     days.
     """
+    date += val * datetime.timedelta(1)
     if skip_weekends:
         while not is_weekday(date):
             date += val * datetime.timedelta(1)
-        return date
-    else:
-        date += val * datetime.timedelta(1)
-        return date
+    return date
 
 
 def previous_day(date, skip_weekends):
@@ -64,7 +71,7 @@ def weekday_initials():
     Sunday.
     """
     # Get a week's worth of date objects
-    week = [datetime.date.today() + datetime.timedelta(i) for i in range(7)]
+    week = [_today() + datetime.timedelta(i) for i in range(7)]
 
     # Sort them so that Sunday is first
     week = sorted(week, key=lambda day: day.weekday() + 1 % 7)
@@ -87,7 +94,7 @@ def weekday_initials():
         while [day for day in day_names
                    if day[:length] == day_name[:length]
                    and day != day_name]:
-            continue
+            length += 1
 
         short_names.append(day_name[:length])
 
@@ -99,11 +106,10 @@ def past_date_str(date):
     Given a date in the past, return a human-readable string explaining how
     long ago it was.
     """
-    today = datetime.date.today()
-    if date > today:
+    if date > _today():
         raise ValueError("Date {} is in the future, not the past".format(date))
 
-    difference = (today - date).days
+    difference = (_today() - date).days
 
     # I'm treating a month as ~30 days. This may be a little inaccurate in some
     # months, but it's good enough for our purposes.
@@ -114,6 +120,6 @@ def past_date_str(date):
     elif difference < 30 * 2:
         return "a month ago"
     elif difference < 366:
-        return "%d months ago" % difference / 30
+        return "%d months ago" % (difference / 30)
     else:
         return "more than a year ago"
