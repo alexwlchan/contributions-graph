@@ -22,7 +22,7 @@ def is_weekday(date):
 
 def is_within_last_year(date):
     """
-    Returns True if a date falls within the last year,.
+    Returns True if a date falls within the last year.
 
     Takes a datetime.date as an argument.
     """
