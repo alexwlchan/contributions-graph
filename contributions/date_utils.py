@@ -43,6 +43,7 @@ def next_day(date, skip_weekends):
         date += timedelta(1)
         return date
 
+
 def weekday_initials():
     """
     Returns a list of abbreviations for the days of the week, starting with
@@ -51,9 +52,9 @@ def weekday_initials():
     # Get a week's worth of date objects
     week = [date.today() + timedelta(i) for i in range(7)]
 
-    # Sort them by weekday(): since weekday() has Sunday = 0, this puts Sunday
-    # first
+    # Sort them by weekday(), and rearrange to put Sunday first
     week = sorted(week, key=lambda day: day.weekday())
+    week.insert(0, week.pop())
 
     # Get the locale's abbreviated name
     days = [day.strftime("%a") for day in week]

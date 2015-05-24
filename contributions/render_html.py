@@ -30,7 +30,7 @@ env = Environment(loader=PackageLoader('contributions', 'templates'))
 env.filters['cell_class'] = cell_class
 
 
-def render_grid(contributions, skip_weekends):
+def grid_template(contributions, skip_weekends):
     """
     Renders a grid.
     """
@@ -105,6 +105,10 @@ def render_grid(contributions, skip_weekends):
         weekdays = weekdays[1:-1]
 
     template = env.get_template("calendar.html")
-    print template.render(data=[list(x) for x in grid_data],
-                          weekdays=weekdays,
-                          months=months)
+    variables = {
+        "grid_data": grid_data,
+        "weekdays": weekdays,
+        "months": months
+    }
+
+    return template, variables
