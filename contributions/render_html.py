@@ -5,7 +5,7 @@ from datetime import date, timedelta
 
 from jinja2 import Environment, PackageLoader
 
-from date_utils import previous_day, next_day, is_weekday, weekday_initials
+from dateutils import previous_day, next_day, is_weekday, weekday_initials
 
 GridCell = namedtuple('GridCell', ['date', 'contributions'])
 

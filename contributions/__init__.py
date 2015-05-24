@@ -3,22 +3,8 @@
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 
-from date_utils import is_weekday, previous_day
+from dateutils import is_weekday, previous_day
 from render_html import grid_template
-
-
-def _display_date(dd):
-    return dd.strftime("%B %d, %Y").replace(" 0", " ")
-
-
-def _is_within_last_year(dd):
-    """
-    Returns True if a date falls within the last year, False otherwise.
-
-    Takes a datetime.date as an argument.
-    """
-    today = date.today()
-    return date(today.year - 1, today.month, today.day) < dd
 
 
 class ContributionsGraph(object):
