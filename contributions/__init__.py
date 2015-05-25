@@ -77,6 +77,8 @@ class ContributionsGraph(object):
                           trim_blocks=True)
 
         env.filters['cell_class'] = html.cell_class(intervals)
+        env.filters['cell_id'] = html.cell_id()
+        env.filters['cell_tooltip'] = html.cell_tooltip
 
         variables = html.grid_template(self.contributions,
                                               self.skip_weekends)

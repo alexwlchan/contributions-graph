@@ -2,6 +2,8 @@
 
 from collections import namedtuple
 import datetime
+import random
+import string
 
 import dateutils
 
@@ -13,6 +15,23 @@ def _display_date(date):
     Returns a long date string. Example output: "May 24, 2015".
     """
     return date.strftime("%B %d, %Y").replace(" 0", " ")
+
+
+def cell_id():
+    """
+    Returns a filter that gives an id for a cell based on the date.
+    """
+    random_string = "".join(random.choice(string.letters) for _ in range(6))
+    def id_filter(cell):
+        return "cell_" + random_string + "_" + cell.date.strftime("%Y_%m_%d")
+    return id_filter
+
+
+def cell_tooltip(cell):
+    """
+    Returns the tooltip HTML
+    """
+    return "<strong>hello</strong> 2"
 
 
 def cell_class(intervals):
