@@ -1,93 +1,56 @@
 #!/usr/bin/env python
+"""
+The record of contributions is in a text file, where each line is in the
+following format:
 
-from collections import defaultdict
+    YYYY-MM-DD value
+
+Excess whitespace is not significant, and text after a hash (#) will be treated
+as a comment. Blank lines are skipped.
+
+This module is responsible for parsing the output of this file, and turning it
+into a dictionary of date/contribution count pairs.
+"""
+
 import datetime
+import logging
 
-import dateutils
 
-
-def parse_contributions_file(filepath, skip_weekends):
+def _parse_line(original_line):
     """
-    Parse the contributions file, and return a dict in which the keys are the
-    dates, and the values are the the total number of contributions for that
-    day. It expects each line to be in the format
-
-        YYYY-MM-DD value
-
-    Contributions that are more than a year old are not included.
+    Parse the output of a single line from the file. Returns a (date, count)
+    tuple if the line contains content, or None if the line contains no
+    content.
     """
-    contributions = defaultdict(int)
+    # Remove any comments and excess whitespace from the line
+    line = original_line.split("#")[0].strip()
 
-    with open(filepath) as ff:
-        for line in ff:
+    # If the line is empty, then there's nothing more to do
+    if not line:
+        return
 
-            if not line.strip():
-                continue
+    # Split the string into a date string, and a value
+    try:
+        date_str, count_str = line.split()
 
-            date_str, value = line.strip().split(" ")
-            try:
-                date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
-            except ValueError:
-                print("Malformed date in this line:\n%s" % line.strip())
-                raise
+        # Try to coerce the date string into a datetime.date object:
+        try:
+            date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            logging.warning("Invalid date in line:{}".format(original_line))
+            raise
 
-            # Only add the contributions if the date is within the last year
-            if dateutils.is_within_last_year(date):
+        # Try to coerce the count into an int
+        try:
+            count = int(count_str)
+        except ValueError:
+            logging.warning("Invalid count in line: {}".format(original_line))
+            raise
 
-                # If skip_weekends is True, only include the value if this is
-                # a weekday
-                if skip_weekends and not dateutils.is_weekday(date):
-                    continue
+    # If the line has too many or too few values separated by spaces, then a
+    # ValueError will be raised.
+    except ValueError:
+        logging.warning("Invalid line:{}".format(original_line))
+        raise
 
-                contributions[date] += int(value.strip())
-
-    return contributions
-
-
-def longest_streak(dates, skip_weekends):
-    """
-    Given a list of datetime.date objects, return the longest sublist of
-    consecutive dates. If there are multiple longest sublists of the same
-    length, then the first such sublist is returned.
-
-    If skip_weekends is set to True, then a Friday and the following Monday
-    are regarded as consecutive.
-    """
-    if not dates:
-        return []
-    dates = sorted(dates)
-
-    streaks = []
-    current_streak = [dates[0]]
-
-    # For each date, check to see whether it extends the current streak
-    for idx in range(1, len(dates)):
-        date = dates[idx]
-        if dateutils.previous_day(date, skip_weekends) == current_streak[-1]:
-            current_streak.append(date)
-        else:
-            streaks.append(current_streak)
-            current_streak = [date]
-
-    # When we've gone through all the dates, save the last streak
-    streaks.append(current_streak)
-
-    # Get the longest streak. Because we sorted the list at the start, if there
-    # are multiple longest streaks, we get the first one. It's a nice
-    # coincidence that this matches the way GitHub's contributions graph works.
-    return max(streaks, key=len)
-
-
-def current_streak(dates, skip_weekends):
-    """
-    Given a list of datetime.date objects, return today's date (if present)
-    and all/any preceding consecutive dates.
-    """
-    streak = []
-    current_date = dateutils._today()
-
-    while current_date in dates:
-        streak.append(current_date)
-        current_date = dateutils.previous_day(current_date, skip_weekends)
-
-    return sorted(streak)
+    return (date, count)
