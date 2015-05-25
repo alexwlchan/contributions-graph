@@ -28,7 +28,14 @@ def is_within_last_year(date):
     """
     today = _today()
     one_year_ago = datetime.date(today.year - 1, today.month, today.day)
-    return one_year_ago <= date <= today
+    if one_year_ago <= date <= today:
+        return True
+
+    # Catch a trailing Saturday in the first column, and display it anyway
+    elif date.weekday() == 5 and date == one_year_ago - datetime.timedelta(1):
+        return True
+    else:
+        return False
 
 
 def _increment_day(date, skip_weekends, val):
@@ -74,7 +81,7 @@ def weekday_initials():
     week = [_today() + datetime.timedelta(i) for i in range(7)]
 
     # Sort them so that Sunday is first
-    week = sorted(week, key=lambda day: day.weekday() + 1 % 7)
+    week = sorted(week, key=lambda day: (day.weekday() + 1) % 7)
 
     # Get the abbreviated names of the weekdays
     day_names = [day.strftime("%a") for day in week]

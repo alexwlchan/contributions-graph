@@ -1,44 +1,61 @@
 <div class="panel panel-default">
-  <div class="panel-heading">
-    <strong>Contributions</strong>
-  </div>
-  <center>
-  <div class="panel-body">
-    <div style="display: table; border-spacing: 2px 1px;">
-      <span class="cell weekday"></span>
-      {% for month in months %}
-      {% if month %}
-      <span class="cell month">{{ month }}</span>
-      {% else %}
-      <span class="cell weekday"></span>
-      {% endif %}
+  <div class="panel-heading">{{ title }}</div>
+    <div class="panel-body">
+      <center>
+      {#
+        Render the month headings above the table.
+      #}
+      <div class="calendar-row">
+        <!-- One column to match the weekday labels -->
+        <span class="cell weekday">&nbsp;</span>
+        {% for month in months %}
+        {% if month %}
+        <span class="cell month">{{ month }}</span>
+        {% else %}
+        <span class="cell weekday">&nbsp;</span>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {#
+        Render the grid entries
+      #}
+      {% for row in grid_entries %}
+      <div class="calendar-row">
+        <span class="cell weekday">{{ weekdays[loop.index0] }}</span>
+        {% for cell in row %}
+        {% if cell|cell_class == "empty" %}
+        <span class="cell contrib contrib_{{ cell|cell_class }}">&nbsp;</span>
+        {% else %}
+        <span class="cell contrib contrib_{{ cell|cell_class }}">&nbsp;</span>
+        {% endif %}
+        {% endfor %}
+      </div>
       {% endfor %}
-    </div>
-    {% for row in grid_data %}
-    <div style="display: table; border-spacing: 2px 1px;">
-      <span class="cell weekday">{{ weekdays[loop.index0] }}</span>
-      {% for cell in row %}
+      {# Render the legend #}
+      <div class="calendar-row legend">
+        {% for _ in range(grid_entries[0]|length - 8) %}
+        <span class="cell contrib_empty"></span>
+        {% endfor %}
+        <span class="cell month">Less</span>
+        <span class="cell contrib_none"></span>
+        <span class="cell contrib_low"></span>
+        <span class="cell contrib_med1"></span>
+        <span class="cell contrib_med2"></span>
+        <span class="cell contrib_high"></span>
+        <span class="cell month">&nbsp;More</span>
+      </div>
 
-      {% set date = cell.date %}
-      <span year="{{ date.year }}"
-            month="{{ date.month }}"
-            day="{{ date.day }}"
-            class="cell contrib contrib_{{ cell|cell_class }}">&nbsp;</span>
-      {% endfor %}
+
+
     </div>
-    {% endfor %}
+  </div>
+
+   {#<div class="panel-heading">
+
     <div style="display: table; border-spacing: 2px 1px; margin-top: 15px;">
       <span class="cell weekday"></span>
-      {% for i in range(grid_data[0]|length - 11) %}
-      <span class="cell contrib_empty"></span>
-      {% endfor %}
-      <span class="cell month">Less</span>
-      <span class="cell contrib_none"></span>
-      <span class="cell contrib_low"></span>
-      <span class="cell contrib_med1"></span>
-      <span class="cell contrib_med2"></span>
-      <span class="cell contrib_high"></span>
-      <span class="cell month">&nbsp;More</span>
+
+
     </div>
 
     <div class="row">
@@ -58,5 +75,5 @@
         <div class="text-muted">Last contributed 9 days ago</div>
       </div>
     </div>
-  </div>
+  </div>#}
 </div>

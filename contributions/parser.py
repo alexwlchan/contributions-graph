@@ -26,7 +26,7 @@ def parse_contributions_file(filepath, skip_weekends):
 
             date_str, value = line.strip().split(" ")
             try:
-                date = datetime.datetime.striptime(date_str, "%Y-%m-%d").date()
+                date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
             except ValueError:
                 print("Malformed date in this line:\n%s" % line.strip())
                 raise

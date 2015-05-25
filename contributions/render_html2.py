@@ -10,7 +10,7 @@ from dateutils import previous_day, next_day, is_weekday, weekday_initials
 GridCell = namedtuple('GridCell', ['date', 'contributions'])
 
 
-def cell_class(cell, intervals = {"low": 5, "med1": 8, "med2": 12}):
+def cell_class(cell, intervals={"low": 5, "med1": 8, "med2": 12}):
     today = date.today()
     start = date(today.year - 1, today.month, today.day)
     if cell.date < start or cell.date > today:

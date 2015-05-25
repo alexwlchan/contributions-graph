@@ -1,0 +1,38 @@
+.cell {
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  min-height: 15px;
+  display: table-cell;
+  margin: 1px;
+  resize: none;
+  font-size: 0.01em;
+}
+
+.panel-heading {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.calendar-row {
+  display: table;
+  border-spacing: 2px 1px;
+}
+
+.month {
+  width: 32px;
+  text-align: left;
+  color: #aaa;
+  font-size: 0.8em;
+}
+
+.weekday {
+  color: #ccc;
+  font-size: 0.7em;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.legend {
+  margin-top: 15px;
+}
