@@ -12,6 +12,7 @@ This module is responsible for preparing and rendering the templates.
 
 from jinja2 import Environment, PackageLoader
 
+
 def _prepare_template():
     """
     Prepare the `index.html` template.
@@ -21,6 +22,7 @@ def _prepare_template():
     template = env.get_template("index.html")
 
     return template
+
 
 def render_template(graphs):
     """
