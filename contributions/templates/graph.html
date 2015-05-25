@@ -1,1 +1,78 @@
-content goes here
+{%- set data = graph.data -%}
+<div class="panel panel-default">
+      <div class="panel-heading">Contributions</div>
+      <div class="panel-body">
+        <center>
+        <div class="contributions-graph">
+          <div class="calendar-row">
+            <div class="cell weekday-heading contrib_empty"></div>
+            {% for month in months -%}
+            {% if month -%}
+            <div class="cell month-heading contrib_empty">{{ month }}</div>
+            {% else -%}
+            <div class="cell contrib_empty"></div>
+            {% endif -%}
+            {% endfor -%}
+          </div>
+          {% for row in data -%}
+          <div class="calendar-row">
+            <div class="cell weekday-heading contrib_empty">
+              {{ weekdays[loop.index-1] }}
+            </div>
+            {% for cell in row -%}
+            <div class="cell contrib_{{ graph.cell_class(cell) }}">
+              <span>{{ cell|tooltip }}</span>
+            </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+          <div class="calendar-row legend">
+            <div class="cell weekday-heading contrib_empty"></div>
+            {% for _ in range(graph.data[0]|length - 6) %}
+            <div class="cell contrib_empty"></div>
+            {% endfor %}
+            <div class="cell contrib_empty month-heading">Less</div>
+            <div class="cell contrib_empty contrib_grad0"></div>
+            <div class="cell contrib_empty contrib_grad1"></div>
+            <div class="cell contrib_empty contrib_grad2"></div>
+            <div class="cell contrib_empty contrib_grad3"></div>
+            <div class="cell contrib_empty contrib_grad4"></div>
+            <div class="cell contrib_empty month-heading">&nbsp;More</div>
+            <div class="cell contrib_empty"></div>
+            <div class="cell contrib_empty"></div>
+            <div class="cell contrib_empty"></div>
+          </div>
+        </div>
+      </div>
+      <div class="statistics row">
+        <div class="col-md-4">
+          <p class="annotation">Total contributions</p>
+          <p class="big_stat">{{ graph.sum }}</p>
+          <p class="annotation">{{ start|display_date }} &ndash; {{ today|display_date }}</p>
+        </div>
+        <div class="col-md-4 middle">
+          <p class="annotation">Longest streak</p>
+          {% if graph.longest_streak %}
+          <p class="big_stat">{{ graph.longest_streak|length }} day{% if graph.longest_streak|length != 1 %}s{% endif %}</p>
+          <p class="annotation">{{ graph.longest_streak[0]|display_date }} &ndash; {{ graph.longest_streak[-1]|display_date }}</p>
+          {% else %}
+          <p class="big_stat">0 days</p>
+          <p class="annotation">No recent contributions</p>
+          {% endif %}
+        </div>
+        <div class="col-md-4">
+          <p class="annotation">Current streak</p>
+          {% if graph.current_streak %}
+          <p class="big_stat">{{ graph.current_streak|length }} day{% if graph.current_streak|length != 1 %}s{% endif %}</p>
+          <p class="annotation">{{ graph.current_streak[0]|display_date }} &ndash; {{ graph.current_streak[-1]|display_date }}</p>
+          {% else %}
+          <p class="big_stat">0 days</p>
+          {% if graph.last_date %}
+          <p class="annotation">Last contributed {{ graph.last_date|elapsed_time }}</p>
+          {% else %}
+          <p class="annotation">No recent contributions</p>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>

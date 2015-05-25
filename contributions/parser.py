@@ -57,7 +57,7 @@ def _parse_line(original_line):
     return (date, count)
 
 
-def _parse_file(filepath):
+def parse_file(filepath):
     """
     Parse the output of a file containing contribution data. Returns a dict of
     date/count pairs.
@@ -71,3 +71,4 @@ def _parse_file(filepath):
                 date, count = line_output
                 contributions[date] += count
     return contributions
+
