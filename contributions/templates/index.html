@@ -1,0 +1,17 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="contributions/static/style.css">
+</head>
+
+<body>
+  <center>
+  <div class="container">
+    {%- for graph_data in graphs %}
+    {% include "graph.html" -%}
+    {% endfor %}
+  </div>
+</body>
+
+</html>
