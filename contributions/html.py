@@ -10,7 +10,7 @@ import dateutils
 GridCell = namedtuple('GridCell', ['date', 'contributions'])
 
 
-def _display_date(date):
+def display_date(date):
     """
     Returns a long date string. Example output: "May 24, 2015".
     """
@@ -29,9 +29,16 @@ def cell_id():
 
 def cell_tooltip(cell):
     """
-    Returns the tooltip HTML
+    Returns the tooltip HTML for a cell.
     """
-    return "<strong>hello</strong> 2"
+    if cell.contributions == 0:
+        count = "No contributions"
+    elif cell.contributions == 1:
+        count = "1 contribution"
+    else:
+        count = "%d contributions" % cell.contributions
+    date_str = display_date(cell.date)
+    return "<strong>%s</strong> on %s" % (count, date_str)
 
 
 def cell_class(intervals):
@@ -88,15 +95,23 @@ def grid_cells(contributions, skip_weekends):
     # The first row is either a Sunday or a Monday (depending on whether we're
     # skipping weekends). Compute a list of dates for the first row.
     if skip_weekends:
-        first_date = start - datetime.timedelta(start.weekday())
+        if start.weekday() == 0:
+            first_date = start
+        else:
+            first_date = start - datetime.timedelta(start.weekday())
     else:
-        first_date = start - datetime.timedelta(start.weekday() + 1 % 7)
+        if start.weekday() == 6:
+            first_date = start
+        else:
+            first_date = start - datetime.timedelta(start.weekday() + 1 % 7)
     next_date = first_date
 
     first_row_dates = [first_date]
-    while next_date <= today:
+    while next_date < today:
         next_date += datetime.timedelta(7)
         first_row_dates.append(next_date)
+
+
 
     # Now get contribution counts for each of these dates, and save the row
     first_row = [
@@ -117,6 +132,8 @@ def grid_cells(contributions, skip_weekends):
             GridCell(dd, contributions.get(dd, 0)) for dd in row_dates
         ]
         grid_entries.append(next_row)
+
+
 
     return grid_entries
 

@@ -9,13 +9,13 @@
       <div class="calendar-row">
 
         <!-- One column to match the weekday labels -->
-        <span class="cell weekday">&nbsp;</span>
+        <span class="cell weekday-heading">&nbsp;</span>
 
         {% for month in months %}
         {% if month %}
-        <span class="cell month">{{ month }}</span>
+        <span class="cell month-heading">{{ month }}</span>
         {% else %}
-        <span class="cell weekday">&nbsp;</span>
+        <span class="cell weekday-heading">&nbsp;</span>
         {% endif %}
         {% endfor %}
       </div>
@@ -25,12 +25,12 @@
       #}
       {% for row in grid_entries %}
       <div class="calendar-row">
-        <span class="cell weekday">{{ weekdays[loop.index0] }}</span>
+        <span class="cell weekday-heading">{{ weekdays[loop.index0] }}</span>
         {% for cell in row %}
         {% if cell|cell_class == "empty" %}
-        <span id="{{ cell|cell_id }}" class="cell contrib contrib_{{ cell|cell_class }}">&nbsp;</span>
+        <div id="{{ cell|cell_id }}" class="cell contrib contrib_{{ cell|cell_class }}"></div>
         {% else %}
-        <div id="{{ cell|cell_id }}" class="info cell contrib contrib_{{ cell|cell_class }}" title="fishcakes"><span>{{ cell|cell_tooltip }}</span>&nbsp;</div>
+        <div id="{{ cell|cell_id }}" class="info cell contrib contrib_{{ cell|cell_class }}"><span>{{ cell|cell_tooltip }}</span></div>
         {% endif %}
         {% endfor %}
       </div>
@@ -41,90 +41,40 @@
         {% for _ in range(grid_entries[0]|length - 8) %}
         <span class="cell contrib_empty"></span>
         {% endfor %}
-        <span class="cell month">Less</span>
+        <span class="cell month-heading">Less</span>
         <span class="cell contrib_none"></span>
         <span class="cell contrib_low"></span>
         <span class="cell contrib_med1"></span>
         <span class="cell contrib_med2"></span>
         <span class="cell contrib_high"></span>
-        <span class="cell month">&nbsp;More</span>
+        <span class="cell month-heading">&nbsp;More</span>
       </div>
 
+      <div class="row">
 
-
+        <div class="col-md-4">
+          <p class="annot-text">Contributions in the last year</p>
+          <p class="big-text">{{ total }}</p>
+          <p class="annot-text">{{ start|display_date }} &ndash; {{ today|display_date }}</p>
+        </div>
+        <div class="col-md-4 center">
+          <p class="annot-text">Longest streak</p>
+          <p class="big-text">{{ longest|length }} day{% if longest|length != 1 %}s{% endif %}</p>
+          {% if longest|length > 0 %}
+          <p class="annot-text">{{ longest[0]|display_date }} &ndash; {{ longest[1]|display_date }}</p>
+          {% else %}
+          <p class="annot-text">No recent contributions</p>
+          {% endif %}
+        </div>
+        <div class="col-md-4">
+          <p class="annot-text">Current streak</p>
+          <p class="big-text">{{ current|length }} day{% if current|length != 1 %}s{% endif %}</p>
+          {% if current|length > 0 %}
+          <p class="annot-text">{{ current[0]|display_date }} &ndash; {{ current[1]|display_date }}</p>
+          {% else %}
+          <p class="annot-text">No recent contributions</p>
+          {% endif %}
+        </div>
     </div>
   </div>
-
-   {#<div class="panel-heading">
-
-    <div style="display: table; border-spacing: 2px 1px; margin-top: 15px;">
-      <span class="cell weekday"></span>
-
-
-    </div>
-
-    <div class="row">
-      <div class="metagrid_data col-md-4">
-        <div class="text-muted">Contributions in the last year</div>
-        <div class="contrib-number">{{ total_contributions}} total</div>
-        <div class="text-muted">{{ start }} &ndash; {{ today }}</div>
-      </div>
-      <div class="metagrid_data metadata-center col-md-4">
-        <div class="text-muted">Longest streak</div>
-        <div class="contrib-number">{{ longest_length }} day{% if longest_length != 1 %}s{% endif %}</div>
-        <div class="text-muted">{{ longest_start }} &ndash; {{ longest_end }}</div>
-      </div>
-      <div class="metagrid_data col-md-4">
-        <div class="text-muted">Current streak</div>
-        <div class="contrib-number">0 days</div>
-        <div class="text-muted">Last contributed 9 days ago</div>
-      </div>
-    </div>
-  </div>#}
 </div>
-
-<a class=info href="#">This is a tooltip <span>an
-aiding text that appears just when you roll on with the mouse</span></a>
-
-<style>
-
-
-.info {
-  position: relative;
-  z-index: 24;
-}
-.info:hover {
-  z-index:25;
-}
-.info span{
-  display:none;
-}
-
-.info:hover span {
-  display:inline-block;
-  position:absolute;
-  top: -35px;
-  left: -70px;
-  width: 155px;
-  height: 25px;
-  border:1px solid #0cf;
-  background-color:#cff; color:#000;
-  text-align: center;
-  font-size: 12px;
-  border-radius: 4px;
-  padding: 3px;
-  vertical-align: middle;
-}
-
-.info:hover span:before {
-  border: solid;
-  border-color: #333 transparent;
-  border-width: 6px 6px 0 6px;
-  bottom: -7px;
-  content: "";
-  left: 70px;
-  position: absolute;
-  z-index: 99;
-}
-</style>
-

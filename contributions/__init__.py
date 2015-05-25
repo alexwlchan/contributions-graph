@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+import datetime
+
 from jinja2 import Environment, PackageLoader
 
+import dateutils
 import parser
 import html
 
@@ -79,15 +82,24 @@ class ContributionsGraph(object):
         env.filters['cell_class'] = html.cell_class(intervals)
         env.filters['cell_id'] = html.cell_id()
         env.filters['cell_tooltip'] = html.cell_tooltip
+        env.filters['display_date'] = html.display_date
 
         variables = html.grid_template(self.contributions,
                                               self.skip_weekends)
 
         template = env.get_template("calendar.html")
 
+        variables["today"] = today = dateutils._today()
+        variables["start"] = start = datetime.date(today.year - 1,
+                                                   today.month,
+                                                   today.day)
+
         variables["months"] = html.filter_months(variables["months"])
         variables["weekdays"] = html.filter_weekdays(self.skip_weekends)
         variables["title"] = title
+        variables["longest"] = self.longest_streak()
+        variables["total"] = self.total_contributions()
+        variables["current"] = self.current_streak()
 
         return template.render(**variables)
 

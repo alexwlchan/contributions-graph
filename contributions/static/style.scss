@@ -1,0 +1,131 @@
+$cell-dimension: 15px;
+$column-width:    1px;
+
+$tooltip-bg: rgba(0.85, 0.85, 0.85, 0.8);
+$tooltip-border: rgb(0.85, 0.85, 0.85);
+$tooltip-color: white;
+
+$tooltip-width:  235px;
+$tooltip-height:  30px;
+$tooltip-top:    -45px;
+
+
+/*------------------------------------*\
+  # CELLS
+\*------------------------------------*/
+
+.cell {
+  width:      $cell-dimension;
+  height:     $cell-dimension;
+  min-width:  $cell-dimension;
+  min-height: $cell-dimension;
+  margin: $column-width;
+  display: table-cell;
+  resize: none;
+}
+
+.calendar-row {
+  display: table;
+  border-spacing: ($column-width * 2) $column_width;
+}
+
+
+/*------------------------------------*\
+  # HEADINGS
+\*------------------------------------*/
+
+.panel-heading {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.month-heading {
+  width: 32px;
+  text-align: left;
+  color: #aaa;
+  font-size: 0.8em;
+}
+
+.weekday-heading {
+  color: #ccc;
+  font-size: 0.7em;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.legend {
+  margin-top: 15px;
+}
+
+
+/*------------------------------------*\
+  # TOOLTIPS
+\*------------------------------------*/
+
+.info {
+  position: relative;
+  z-index: 24;
+}
+.info:hover {
+  z-index: 25;
+}
+.info span{
+  display: none;
+}
+
+.info:hover span {
+  width:  $tooltip-width;
+  height: $tooltip-height;
+  top:    $tooltip-top;
+  left:   -($tooltip-width - $cell_dimension) / 2;
+
+  display:  inline-block;
+  position: absolute;
+
+//  border: 1px solid $tooltip-border;
+  background-color: $tooltip-bg;
+  color: $tooltip-color;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 4px;
+  line-height: $tooltip-height;
+  vertical-align: middle;
+}
+
+.info:hover span:before {
+  border: solid;
+  border-color: $tooltip-bg transparent;
+  border-width: 7px 7px 0 7px;
+  bottom: -7px;
+  content: "";
+  left: ($tooltip-width - $cell_dimension) / 2;
+  position: absolute;
+  z-index: 99;
+}
+
+
+/*------------------------------------*\
+  # STATS PANE
+\*------------------------------------*/
+
+.col-md-4 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.annot-text {
+  color: #aaa;
+  font-size: 0.7em;
+  margin-bottom: 0px;
+}
+
+.big-text {
+  font-size: 2.2em;
+  margin-bottom: 3px;
+  margin-top: 2px;
+}
+
+.col-md-4.center {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
