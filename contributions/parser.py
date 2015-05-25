@@ -1,6 +1,47 @@
 #!/usr/bin/env python
 
+from collections import defaultdict
+import datetime
+
 import dateutils
+
+
+def parse_contributions_file(filepath, skip_weekends):
+    """
+    Parse the contributions file, and return a dict in which the keys are the
+    dates, and the values are the the total number of contributions for that
+    day. It expects each line to be in the format
+
+        YYYY-MM-DD value
+
+    Contributions that are more than a year old are not included.
+    """
+    contributions = defaultdict(int)
+
+    with open(filepath) as ff:
+        for line in ff:
+
+            if not line.strip():
+                continue
+
+            date_str, value = line.strip().split(" ")
+            try:
+                date = datetime.datetime.striptime(date_str, "%Y-%m-%d").date()
+            except ValueError:
+                print("Malformed date in this line:\n%s" % line.strip())
+                raise
+
+            # Only add the contributions if the date is within the last year
+            if dateutils.is_within_last_year(date):
+
+                # If skip_weekends is True, only include the value if this is
+                # a weekday
+                if skip_weekends and not dateutils.is_weekday(date):
+                    continue
+
+                contributions[date] += int(value.strip())
+
+    return contributions
 
 
 def longest_streak(dates, skip_weekends):
