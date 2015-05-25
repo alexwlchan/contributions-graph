@@ -1,0 +1,7 @@
+# This is anotjer comment
+2012-10-09 123
+
+# This is a more complicated file
+2012-10-08 124
+2012-10-09 123 # This is the same as the line above: the result should be
+               # 123*2 = 246, but that's what we have to test

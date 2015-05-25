@@ -2,6 +2,7 @@
 """
 Unit tests for contributions.parser.
 """
+from collections import defaultdict
 import datetime
 import logging
 import os
@@ -12,6 +13,10 @@ sys.path.append(os.getcwd())
 from contributions import parser
 
 logging.disable(logging.CRITICAL)
+
+
+def _testfile(filename):
+    return os.path.join(os.getcwd(), "contributions", "tests", filename)
 
 
 class TestParserMethods(unittest.TestCase):
@@ -40,6 +45,28 @@ class TestParserMethods(unittest.TestCase):
         }
         for line, output in VALID_LINES.iteritems():
             self.assertEqual(parser._parse_line(line), output)
+
+    def test_parse_file(self):
+        self.assertEqual(
+            parser._parse_file(_testfile("file1.txt")),
+            defaultdict(int)
+        )
+
+        self.assertEqual(
+            parser._parse_file(_testfile("file2.txt")),
+            defaultdict(int, {
+                datetime.date(2012, 10, 9): 123,
+                datetime.date(2012, 10, 8): 124
+            })
+        )
+
+        self.assertEqual(
+            parser._parse_file(_testfile("file3.txt")),
+            defaultdict(int, {
+                datetime.date(2012, 10, 9): 246,
+                datetime.date(2012, 10, 8): 124
+            })
+        )
 
 
 if __name__ == '__main__':

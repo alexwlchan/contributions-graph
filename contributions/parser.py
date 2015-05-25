@@ -12,6 +12,7 @@ This module is responsible for parsing the output of this file, and turning it
 into a dictionary of date/contribution count pairs.
 """
 
+from collections import defaultdict
 import datetime
 import logging
 
@@ -54,3 +55,19 @@ def _parse_line(original_line):
         raise
 
     return (date, count)
+
+
+def _parse_file(filepath):
+    """
+    Parse the output of a file containing contribution data. Returns a dict of
+    date/count pairs.
+    """
+    contributions = defaultdict(int)
+
+    with open(filepath) as f:
+        for line in f:
+            line_output = _parse_line(line)
+            if line_output is not None:
+                date, count = line_output
+                contributions[date] += count
+    return contributions
