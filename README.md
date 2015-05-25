@@ -2,11 +2,13 @@
 
 This is a clone of the Contributions chart from the GitHub user page, written in Python.
 
-This is what it looks like:
+This is what it looks like with the default settings:
 
 <img src="screenshot-green.png">
 
 I wrote it so that I could use the GitHub design for other things I want to track, including exercise and reading.
+
+The original graph was [introduced by GitHub in 2013](https://github.com/blog/1360-introducing-contributions). I don't know whose idea it was; I just copied the design and built my own version of it.
 
 ## Installation
 
@@ -84,3 +86,5 @@ Here are some ideas I have for the future:
 *   Unit tests are awesome. I should write more of them.
 
 *   The ability to customise some of the text. Right now, it only says "Contributions". It would be nice to be able to put other words in as appropriate.
+
+*   Squash the bugs! Since this project involves a lot of fiddly stuff with calendars and dates, it's almost certain that somewhere, someday, something will go wrong. I'd like to do some more testing to find out if/where that's going to be.
