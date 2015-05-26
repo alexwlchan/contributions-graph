@@ -87,4 +87,10 @@ Here are some ideas I have for the future:
 
 *   The ability to customise some of the text. Right now, it only says "Contributions". It would be nice to be able to put other words in as appropriate.
 
+*   More statistics options. I just took the three stats that GitHub offers, but there may be different ones that are useful.
+
+    (For example, a graph of steps walked doesn't really have much use for longest/current streak, but might want average daily steps.)
+
+*   Skippable weekends? I think it might be useful to use this for some work-related tasks, but since I don't work weekends, there would be a bunch of blank boxes. It might be nice to have an option for omitting weekends.
+
 *   Squash the bugs! Since this project involves a lot of fiddly stuff with calendars and dates, it's almost certain that somewhere, someday, something will go wrong. I'd like to do some more testing to find out if/where that's going to be.
