@@ -13,6 +13,7 @@ This module is responsible for preparing and rendering the templates.
 from collections import namedtuple
 import datetime
 from types import StringTypes
+import ntpath
 
 from jinja2 import Environment, PackageLoader
 
@@ -44,6 +45,7 @@ def create_graph(filepaths):
                 [key for key, val in contributions.iteritems() if val > 0]
             ),
             "sum": sum(contributions.itervalues()),
+            "repo_name": ntpath.basename(path)
         }
 
         graph["last_date"] = (
