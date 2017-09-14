@@ -174,6 +174,7 @@ def filter_months(months):
     # heading
     indices = [idx for idx, month in enumerate(months) if month]
     for idx in reversed(indices):
-        del months[idx+1]
+        if idx != len(months) - 1:
+            del months[idx+1]
 
     return months
